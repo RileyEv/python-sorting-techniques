@@ -5,6 +5,8 @@ from threading import Thread
 from heapq import merge
 import timeit
 import random
+import csv
+import numpy as np
 
 
 def mergeSort(m):
@@ -91,7 +93,7 @@ def sortData(q):  # main sorting function
         q.task_done()
 
 q = Queue(maxsize=0)
-num_threads = 5
+num_threads = 4  # choose an appropriate number of threads for you computer
 
 for i in range(num_threads):
     worker = Thread(target=sortData, args=(q,))
@@ -110,23 +112,61 @@ averages = {}
 
 for k, v in results.iteritems():
     bubble_total = 0
+    bubble_list = []
     merge_total = 0
+    merge_list = []
     insertion_total = 0
+    insertion_list = []
     quick_total = 0
+    quick_list = []
     n = 0
     for i in v:
         n += 1
         bubble_total += i['bubble']
+        bubble_list.append(i['bubble'])
         merge_total += i['merge']
+        merge_list.append(i['merge'])
         insertion_total += i['insertion']
+        insertion_list.append(i['insertion'])
         quick_total += i['quick']
+        quick_list.append(i['quick'])
     averages[k] = {
         'bubble': bubble_total / float(n),
+        'bubble_std': np.std(np.array(bubble_list)),
         'merge': merge_total / float(n),
+        'merge_std': np.std(np.array(merge_list)),
         'insertion': insertion_total / float(n),
+        'insertion_std': np.std(np.array(insertion_list)),
         'quick': quick_total / float(n),
+        'quick_std': np.std(np.array(quick_list)),
     }
 
 print(averages)
 
+data = [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+]
+for k,v in sorted(averages.iteritems()):
+    data[0].append(k)
+    data[1].append(v['bubble'])
+    data[2].append(v['bubble_std'])
+    data[3].append(v['merge'])
+    data[4].append(v['merge_std'])
+    data[5].append(v['insertion'])
+    data[6].append(v['insertion_std'])
+    data[7].append(v['quick'])
+    data[8].append(v['quick_std'])
 
+
+with open('averages.csv', 'w') as f:
+    csvfile = csv.writer(f)
+    for i in data:
+        csvfile.writerow(i)
