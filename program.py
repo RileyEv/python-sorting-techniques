@@ -106,8 +106,8 @@ def sortData(q):  # main sorting function
         python_time = timeit.default_timer() - start_time
         start_time = timeit.default_timer()
         riley_bubble = rileyBubbleSort(arr)
-        riley_bubble_time = timeit.defualt_timer()
-        if quick == bubble and insertion == merge and python == riley_bubble and quick == merge:
+        riley_bubble_time = timeit.default_timer() - start_time
+        if quick == bubble and quick == merge and python == riley_bubble and quick == insertion:
             results[len(arr)].append({
                 'bubble': bubble_time,
                 'merge': merge_time,
@@ -131,13 +131,15 @@ for i in range(num_threads):
 for a in range(100, 1001, 100):
     results[a] = []
 
-for i in range(10000):
-    length = random.randrange(100, 1000, 100)
+for i in range(20):
+    length = random.randrange(100, 1100, 100)
     q.put([random.randrange(0, length, 1) for x in range(length)])
 
 q.join()
 
 averages = {}
+
+print(results)
 
 for k, v in results.iteritems():
     bubble_total = 0

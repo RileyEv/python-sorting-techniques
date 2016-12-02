@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import random
 def rileyBubbleSort(arr):
     sorted = False
@@ -11,8 +13,10 @@ def rileyBubbleSort(arr):
                     sorted = False
                     arr[n + 1], arr[n] = arr[n], arr[n + 1]
     return arr
-    
+
 arr = [random.randrange(0,100,1) for x in range(100)]
 
 print(arr)
 print(rileyBubbleSort(arr))
+
+print( sorted(arr) == rileyBubbleSort(arr))
