@@ -131,7 +131,7 @@ for i in range(num_threads):
 for a in range(100, 1001, 100):
     results[a] = []
 
-for i in range(10000):
+for i in range(50000):
     length = random.randrange(100, 1100, 100)
     q.put([random.randrange(0, length, 1) for x in range(length)])
 
